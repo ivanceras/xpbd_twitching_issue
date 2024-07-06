@@ -1,17 +1,10 @@
-#![deny(warnings)]
+//#![deny(warnings)]
 use bevy::core_pipeline::experimental::taa::TemporalAntiAliasBundle;
 use bevy::core_pipeline::experimental::taa::TemporalAntiAliasPlugin;
-use bevy::diagnostic::DiagnosticsStore;
-use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::math::primitives::Cuboid;
 use bevy::math::*;
-use bevy::pbr::wireframe::WireframeConfig;
-use bevy::pbr::ExtendedMaterial;
 use bevy::prelude::*;
-use bevy::render::primitives::Aabb;
 use bevy::window::PresentMode;
-use bevy::window::PrimaryWindow;
-use bevy::winit::WinitWindows;
 use bevy_obj::ObjPlugin;
 use bevy_trackball::prelude::*;
 use bevy_xpbd_3d::prelude::*;
@@ -86,7 +79,6 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    asset_server: Res<AssetServer>,
 ) {
     commands.spawn((DirectionalLightBundle {
         directional_light: DirectionalLight {
@@ -204,9 +196,8 @@ fn setup(
 
 fn spawn_obj(
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
+    meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
-    asset_server: Res<AssetServer>,
     keyboard_input: Res<ButtonInput<KeyCode>>,
     obj: Res<Obj>,
 ) {
@@ -222,7 +213,6 @@ fn spawn_obj(
 
         for (i, handle) in obj.handles.iter().enumerate() {
             let mesh = meshes.get(handle).unwrap();
-            let aabb = mesh.compute_aabb().unwrap();
 
             if let Some(collider) = Collider::convex_hull_from_mesh(&mesh) {
                 commands.spawn((
