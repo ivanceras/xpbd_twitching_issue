@@ -1,11 +1,10 @@
 [package]
-name = "rapier_twitch"
+name = "xpbd_twitch"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
 bevy = "0.13.2"
-bevy-inspector-egui = "0.24.0"
 bevy_xpbd_3d = "0.4.0"
 bevy_trackball = "0.6.0"
 bevy_obj = "=0.13.0"

@@ -1,3 +1,4 @@
+#![deny(warnings)]
 use bevy::core_pipeline::experimental::taa::TemporalAntiAliasBundle;
 use bevy::core_pipeline::experimental::taa::TemporalAntiAliasPlugin;
 use bevy::diagnostic::DiagnosticsStore;
@@ -11,7 +12,6 @@ use bevy::render::primitives::Aabb;
 use bevy::window::PresentMode;
 use bevy::window::PrimaryWindow;
 use bevy::winit::WinitWindows;
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_obj::ObjPlugin;
 use bevy_trackball::prelude::*;
 use bevy_xpbd_3d::prelude::*;
@@ -109,6 +109,10 @@ fn setup(
     trackball.input.map_wasd();
     trackball.input.reset_key = Some(KeyCode::KeyR);
     trackball.input.orbit_button = Some(MouseButton::Right);
+    trackball.input.slide_up_key = None;
+
+   let mut cam_transform = Transform::from_translation(eye);
+   cam_transform.look_at(target, up);
 
     // camera
     commands.spawn((
@@ -119,6 +123,7 @@ fn setup(
                 is_active: true,
                 ..default()
             },
+            transform: cam_transform,
             ..default()
         },
         trackball,
